@@ -1,13 +1,11 @@
-import { Button } from "@mui/material";
-
+import { Button } from '@mui/material';
+import TaskForm from './components/TaskForm';
 
 export default function Home() {
   return (
-    <main >
+    <main>
       <h1>Hello, World!</h1>
-      <Button variant="outlined">
-        Hello, MUI
-      </Button>
+      <TaskForm />
     </main>
-  )
+  );
 }
