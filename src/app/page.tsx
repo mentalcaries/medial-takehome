@@ -1,11 +1,21 @@
-import { Button } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import TaskForm from './components/TaskForm';
+import { TaskList } from './components/TaskList';
 
 export default function Home() {
   return (
-    <main>
-      <h1>Hello, World!</h1>
-      <TaskForm />
-    </main>
+    <Box mx="auto" padding={3}>
+      <Typography
+        variant="h4"
+        mb={4}
+        textAlign="center"
+        component="h1"
+        fontWeight=""
+      >
+        Hello, World!
+      </Typography>
+      {/* <TaskForm /> */}
+      <TaskList />
+    </Box>
   );
 }
