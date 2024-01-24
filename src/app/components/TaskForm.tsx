@@ -13,7 +13,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { ChangeEvent, FormEvent, FormEventHandler, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 
 type FormData = {
   title: string;
@@ -23,6 +23,11 @@ type FormData = {
   priorityLevel: string;
   notes: string;
   status: string;
+};
+
+type User = {
+  userId: string;
+  displayName: string;
 };
 
 const defaultTaskFormVales = {
@@ -37,6 +42,19 @@ const defaultTaskFormVales = {
 
 const TaskForm = () => {
   const [formData, setFormData] = useState<FormData>(defaultTaskFormVales);
+  const [userList, setUserList] = useState<User[]>([]);
+
+  useEffect(() => {
+    fetch('./data/users.json')
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        }
+      })
+      .then((data) => setUserList(data));
+  }, []);
+
+  console.log(userList);
 
   const handleInputChange = (
     event:
@@ -71,7 +89,7 @@ const TaskForm = () => {
             />
             <TextField
               id="description"
-              name='description'
+              name="description"
               label="Description"
               size="small"
               required
@@ -80,7 +98,7 @@ const TaskForm = () => {
             />
             <TextField
               id="dueDate"
-              name='dueDate'
+              name="dueDate"
               size="small"
               type="date"
               label="Due Date"
@@ -89,15 +107,35 @@ const TaskForm = () => {
               value={formData.dueDate}
             />
 
-            
-            <TextField
+            {/* <TextField
               id="assignee"
-              name='assignee'
+              name="assignee"
               label="Assignee"
               size="small"
               onChange={handleInputChange}
               value={formData.assignee}
-            />
+            /> */}
+
+            <FormControl size="small">
+              <InputLabel id="assignee">Assignee</InputLabel>
+              <Select
+                labelId="assignee"
+                label="Assignee"
+                id="assignee"
+                name="assignee"
+                onChange={handleInputChange}
+                value={formData.priorityLevel}
+              >
+                {userList.map((user) => {
+                  const { userId, displayName } = user;
+                  return (
+                    <MenuItem value={displayName} key={userId}>
+                      {displayName}
+                    </MenuItem>
+                  );
+                })}
+              </Select>
+            </FormControl>
 
             <FormControl size="small">
               <InputLabel id="priorityLevel">Priority</InputLabel>
@@ -105,7 +143,7 @@ const TaskForm = () => {
                 labelId="priorityLevel"
                 label="Priority"
                 id="priorityLevel"
-                name='priorityLevel'
+                name="priorityLevel"
                 onChange={handleInputChange}
                 value={formData.priorityLevel}
               >
@@ -117,7 +155,7 @@ const TaskForm = () => {
 
             <TextField
               id="notes"
-              name='notes'
+              name="notes"
               label="Notes"
               multiline
               size="small"
@@ -132,7 +170,7 @@ const TaskForm = () => {
                 labelId="status"
                 label="Status"
                 id="status"
-                name='status'
+                name="status"
                 onChange={handleInputChange}
                 value={formData.status}
               >

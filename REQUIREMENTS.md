@@ -4,14 +4,14 @@
 - [x] Use TypeScript for type safety.
 - [x] Use Material UI for the UI components (the default MUI styling should be okay).
 - [ ] Implement a form to create new tasks with the following fields:
-      - [] Title (string)
-      - [] Description (string)
-      - [] Due Date (date)
-      - [] Assignee (string)
-      - [] Priority Level (select: low, medium, high)
-      - [] Notes (string)
-      - [] Status (select: pending, in progress, completed, canceled)
-- [] Display the list of tasks in a table or list view (I have attached a JSON list that you can import/write to and read from.)
+      - [x] Title (string)
+      - [x] Description (string)
+      - [x] Due Date (date)
+      - [x] Assignee (string)
+      - [x] Priority Level (select: low, medium, high)
+      - [x] Notes (string)
+      - [x] Status (select: pending, in progress, completed, canceled)
+- [x] Display the list of tasks in a table or list view (I have attached a JSON list that you can import/write to and read from.)
 - [] Implement functionality to edit and delete tasks.
 - [] Implement functionality to assign tasks to other users 
 - [] Style the application using Material UI components.
