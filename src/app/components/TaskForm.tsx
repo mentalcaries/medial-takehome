@@ -19,7 +19,7 @@ type FormData = {
   title: string;
   description: string;
   dueDate: string;
-  assignee: string;
+  assignee: User;
   priorityLevel: string;
   notes: string;
   status: string;
@@ -34,7 +34,7 @@ const defaultTaskFormVales = {
   title: '',
   description: '',
   dueDate: '',
-  assignee: '',
+  assignee: { userId: '', displayName: '' },
   priorityLevel: '',
   notes: '',
   status: '',
@@ -53,8 +53,6 @@ const TaskForm = () => {
       })
       .then((data) => setUserList(data));
   }, []);
-
-  console.log(userList);
 
   const handleInputChange = (
     event:
@@ -124,7 +122,7 @@ const TaskForm = () => {
                 id="assignee"
                 name="assignee"
                 onChange={handleInputChange}
-                value={formData.priorityLevel}
+                value={formData.assignee}
               >
                 {userList.map((user) => {
                   const { userId, displayName } = user;
