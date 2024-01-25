@@ -15,20 +15,7 @@ import {
 } from '@mui/material';
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 
-type FormData = {
-  title: string;
-  description: string;
-  dueDate: string;
-  assignee: User;
-  priorityLevel: string;
-  notes: string;
-  status: string;
-};
 
-type User = {
-  userId: string;
-  displayName: string;
-};
 
 const defaultTaskFormVales = {
   title: '',
@@ -41,7 +28,7 @@ const defaultTaskFormVales = {
 };
 
 const TaskForm = () => {
-  const [formData, setFormData] = useState<FormData>(defaultTaskFormVales);
+  const [formData, setFormData] = useState<Task>(defaultTaskFormVales);
   const [userList, setUserList] = useState<User[]>([]);
 
   useEffect(() => {
@@ -122,7 +109,7 @@ const TaskForm = () => {
                 id="assignee"
                 name="assignee"
                 onChange={handleInputChange}
-                value={formData.assignee}
+                value={formData.assignee.displayName}
               >
                 {userList.map((user) => {
                   const { userId, displayName } = user;

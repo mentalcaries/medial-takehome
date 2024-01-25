@@ -27,9 +27,9 @@ export default function Home() {
         </Button>
       </Box>
 
-      <TaskForm />
-      {/* <TaskList /> */}
-      <TaskDetails />
+      {/* <TaskForm /> */}
+      <TaskList />
+      {/* <TaskDetails /> */}
     </Box>
   );
 }

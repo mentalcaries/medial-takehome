@@ -35,7 +35,7 @@ const taskData: TaskData = {
   status: 'in progress',
 };
 
-const TaskModal = () => {
+const TaskDetails = () => {
   const [open, setOpen] = useState(true);
 
   const handleOpen = () => setOpen(true);
@@ -87,4 +87,4 @@ const TaskModal = () => {
   );
 };
 
-export default TaskModal;
+export default TaskDetails;
