@@ -27,30 +27,39 @@ export const TaskList = () => {
         <TableHead>
           <TableRow>
             <TableCell>Title</TableCell>
-            <TableCell align="right">Description</TableCell>
-            <TableCell align="right">Due Date</TableCell>
-            <TableCell align="right">Priority</TableCell>
-            <TableCell align="right">Assignee</TableCell>
-            <TableCell align="right">Status</TableCell>
-            <TableCell align="right">Notes</TableCell>
+            <TableCell>Description</TableCell>
+            <TableCell>Due Date</TableCell>
+            <TableCell>Priority</TableCell>
+            <TableCell>Assignee</TableCell>
+            <TableCell>Status</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {tableData.map((row) => {
+            const {
+              id,
+              title,
+              description,
+              dueDate,
+              priorityLevel,
+              assignee: { displayName },
+              status,
+            } = row;
             return (
               <TableRow
-                key={row.id}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                hover
+                key={id}
+            
+                sx={{ '&:last-child td, &:last-child th': { border: 0 }, cursor:'pointer' }}
               >
                 <TableCell component="th" scope="row">
-                  {row.title}
+                  {title}
                 </TableCell>
-                <TableCell align="right">{row.description}</TableCell>
-                <TableCell align="right">{row.dueDate}</TableCell>
-                <TableCell align="right">{capitalize(row.priorityLevel)}</TableCell>
-                <TableCell align="right">{row.assignee.displayName}</TableCell>
-                <TableCell align="right">{capitalize(row.status)}</TableCell>
-                <TableCell align="right">{row.notes}</TableCell>
+                <TableCell>{description}</TableCell>
+                <TableCell>{dueDate}</TableCell>
+                <TableCell>{capitalize(priorityLevel)}</TableCell>
+                <TableCell>{displayName}</TableCell>
+                <TableCell>{capitalize(status)}</TableCell>
               </TableRow>
             );
           })}
