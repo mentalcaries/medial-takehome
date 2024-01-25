@@ -13,13 +13,19 @@ import TaskDetails from './TaskDetails';
 
 export const TaskList = () => {
   const [tableData, setTableData] = useState<Task[]>([]);
-  const [currentTask, setCurrentTask] = useState({});
+  const [currentTask, setCurrentTask] = useState<Task | null>(null);
+  const [isTaskDetailsOpen, setIsTaskDetailsOpen] = useState(false);
 
   useEffect(() => {
     fetch('./data/tasks.json')
       .then((response) => response.json())
       .then((data) => setTableData(data));
   }, []);
+
+  const handleTaskSelect = (row: Task) => {
+    setCurrentTask(row);
+    setIsTaskDetailsOpen(true);
+  };
 
   return (
     <TableContainer component={Paper}>
@@ -49,8 +55,8 @@ export const TaskList = () => {
               <TableRow
                 hover
                 key={id}
-            
-                sx={{ '&:last-child td, &:last-child th': { border: 0 }, cursor:'pointer' }}
+                onClick={() => handleTaskSelect(row)}
+                sx={{ cursor: 'pointer' }}
               >
                 <TableCell component="th" scope="row">
                   {title}
@@ -65,6 +71,7 @@ export const TaskList = () => {
           })}
         </TableBody>
       </Table>
+      {currentTask ? <TaskDetails taskData={currentTask} /> : null}
     </TableContainer>
   );
 };

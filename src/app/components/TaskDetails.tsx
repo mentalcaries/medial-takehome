@@ -7,35 +7,35 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { Card, Paper } from '@mui/material';
 
-interface TaskData {
-  id: string;
-  title: string;
-  description: string;
-  dueDate: string;
-  assignee: {
-    userId: string;
-    displayName: string;
-  };
-  priorityLevel: string;
-  notes: string;
-  status: string;
-}
+// interface TaskData {
+//   id: string;
+//   title: string;
+//   description: string;
+//   dueDate: string;
+//   assignee: {
+//     userId: string;
+//     displayName: string;
+//   };
+//   priorityLevel: string;
+//   notes: string;
+//   status: string;
+// }
 
-const taskData: TaskData = {
-  id: '2e5b7b9d-3a9d-4f51-b72d-1e1be617c1e9',
-  title: 'Task 2',
-  description: 'Pellentesque habitant morbi tristique senectus et...',
-  dueDate: '2023-06-12',
-  assignee: {
-    userId: '2',
-    displayName: 'Jane Smith',
-  },
-  priorityLevel: 'medium',
-  notes: '',
-  status: 'in progress',
-};
+// const taskData: TaskData = {
+//   id: '2e5b7b9d-3a9d-4f51-b72d-1e1be617c1e9',
+//   title: 'Task 2',
+//   description: 'Pellentesque habitant morbi tristique senectus et...',
+//   dueDate: '2023-06-12',
+//   assignee: {
+//     userId: '2',
+//     displayName: 'Jane Smith',
+//   },
+//   priorityLevel: 'medium',
+//   notes: '',
+//   status: 'in progress',
+// };
 
-const TaskDetails = () => {
+const TaskDetails = ({taskData} : {taskData: Task}) => {
   const [open, setOpen] = useState(true);
 
   const handleOpen = () => setOpen(true);
