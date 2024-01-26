@@ -27,6 +27,11 @@ export const TaskList = () => {
     setIsTaskDetailsOpen(true);
   };
 
+  const handleModalClose = () => {
+    setCurrentTask(null);
+    setIsTaskDetailsOpen(false)
+  }
+
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -71,7 +76,7 @@ export const TaskList = () => {
           })}
         </TableBody>
       </Table>
-      {currentTask ? <TaskDetails taskData={currentTask} /> : null}
+      {currentTask ? <TaskDetails taskData={currentTask} isOpen={isTaskDetailsOpen} onClose={handleModalClose}/> : null}
     </TableContainer>
   );
 };

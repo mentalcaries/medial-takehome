@@ -6,38 +6,22 @@ import Modal from '@mui/material/Modal';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { Card, Chip, Paper, capitalize } from '@mui/material';
+import {
+  Autorenew,
+  CheckCircle,
+  NotInterested,
+  Pending,
+} from '@mui/icons-material';
 
-// interface TaskData {
-//   id: string;
-//   title: string;
-//   description: string;
-//   dueDate: string;
-//   assignee: {
-//     userId: string;
-//     displayName: string;
-//   };
-//   priorityLevel: string;
-//   notes: string;
-//   status: string;
-// }
-
-// const taskData: TaskData = {
-//   id: '2e5b7b9d-3a9d-4f51-b72d-1e1be617c1e9',
-//   title: 'Task 2',
-//   description: 'Pellentesque habitant morbi tristique senectus et...',
-//   dueDate: '2023-06-12',
-//   assignee: {
-//     userId: '2',
-//     displayName: 'Jane Smith',
-//   },
-//   priorityLevel: 'medium',
-//   notes: '',
-//   status: 'in progress',
-// };
-
-const TaskDetails = ({ taskData }: { taskData: Task }) => {
-  const [isOpen, setIsOpen] = useState(true);
-
+const TaskDetails = ({
+  taskData,
+  isOpen,
+  onClose,
+}: {
+  taskData: Task;
+  isOpen: boolean;
+  onClose: () => void;
+}) => {
   const {
     title,
     description,
@@ -49,16 +33,22 @@ const TaskDetails = ({ taskData }: { taskData: Task }) => {
   } = taskData;
 
   // const handleOpen = () => setOpen(true);
-  const handleClose = () => setIsOpen(false);
 
-  const getPriorityBadgeColour = (priority: string)=> {
-    if(priority === 'high') return '#ef5350'
-    if(priority === 'medium') return '#ff9800'
-    else return '#03a9f4'
-  }
+  const getPriorityBadgeColour = (priority: string) => {
+    if (priority === 'high') return '#ef5350';
+    if (priority === 'medium') return '#ff9800';
+    else return '#03a9f4';
+  };
+
+  const getStatusIcon = (status: string) => {
+    if (status === 'pending') return <Pending />;
+    if (status === 'in progress') return <Autorenew />;
+    if (status === 'completed') return <CheckCircle />;
+    if (status === 'cancelled') return <NotInterested />;
+  };
 
   return (
-    <Modal open={isOpen} onClose={handleClose}>
+    <Modal open={isOpen} onClose={onClose}>
       <Card
         sx={{
           px: 3,
@@ -68,30 +58,51 @@ const TaskDetails = ({ taskData }: { taskData: Task }) => {
           top: '40%',
           left: '50%',
           transform: 'translate(-50%, -50%)',
+          borderRadius: 4,
         }}
       >
-        <Typography variant="h5" component="h2">
+        <Typography
+          variant="h5"
+          component="h2"
+          textAlign="center"
+          fontWeight="bold"
+        >
           Task Details
         </Typography>
-        <Chip  sx={{ mt: 2, bgcolor:`${getPriorityBadgeColour(priorityLevel)}` }} label={`${capitalize(priorityLevel)} Priority`} />
-        <Box sx={{ mt: 3 }}>
+        <Chip
+          sx={{ mt: 2, bgcolor: `${getPriorityBadgeColour(priorityLevel)}` }}
+          label={`${capitalize(priorityLevel)} Priority`}
+        />
+        <Box sx={{ mt: 3, px: 2 }}>
           <Typography variant="body1">
-            Title: {title}
+            <Typography component="span" fontWeight="bold">
+              Title:{' '}
+            </Typography>
+            {title}
           </Typography>
           <Typography variant="body1" sx={{ mt: 2 }}>
-            Description: {description}
+            <Typography component="span" fontWeight="bold">
+              Description:{' '}
+            </Typography>
+            {description}
           </Typography>
           <Typography variant="body1" sx={{ mt: 2 }}>
-            Due Date: {dueDate}
+            <Typography component="span" fontWeight="bold">
+              Due Date:{' '}
+            </Typography>
+            {dueDate}
           </Typography>
           <Typography variant="body1" sx={{ mt: 2 }}>
-            Assigned To: {displayName}
+            <Typography component="span" fontWeight="bold">
+              Assigned To:{' '}
+            </Typography>
+            {displayName}
           </Typography>
-          <Typography variant="body1" sx={{ mt: 2 }}>
-            Priority: 
-          </Typography>
-          <Typography variant="body1" sx={{ mt: 2 }}>
-            Status: {capitalize(status)}
+          <Typography variant="body1" sx={{ mt: 2, display:'flex', gap:'4px', alignItems:'center' }}>
+            <Typography component="span" fontWeight="bold">
+              Status: {' '}
+            </Typography>{' '}
+            {capitalize(status)} {getStatusIcon(status)}
           </Typography>
           {notes && (
             <Typography variant="body1" sx={{ mt: 2 }}>
