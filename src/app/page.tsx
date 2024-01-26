@@ -1,10 +1,15 @@
+'use client';
+
 import { Box, Button, Typography } from '@mui/material';
 import TaskForm from './components/TaskForm';
 import { TaskList } from './components/TaskList';
 import TaskDetails from './components/TaskDetails';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
+import { useState } from 'react';
 
 export default function Home() {
+  const [isNewTaskModalOpen, setIsNewTaskModalOpen] = useState(false);
+
   return (
     <Box mx="auto" padding={3}>
       <Typography
@@ -21,6 +26,7 @@ export default function Home() {
           variant="contained"
           size="large"
           sx={{ display: 'flex', justifyContent: 'space-between', gap: '8px' }}
+          onClick={()=> setIsNewTaskModalOpen(true)}
         >
           <AddCircleOutlineRoundedIcon />
           New Task

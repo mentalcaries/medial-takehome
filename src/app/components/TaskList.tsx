@@ -10,6 +10,16 @@ import Paper from '@mui/material/Paper';
 import { capitalize } from '@mui/material';
 import { useEffect, useState } from 'react';
 import TaskDetails from './TaskDetails';
+import { format } from 'date-fns';
+
+const tableHeadings = [
+  'Title',
+  'Description',
+  'Due Date',
+  'Priority',
+  'Assignee',
+  'Status',
+];
 
 export const TaskList = () => {
   const [tableData, setTableData] = useState<Task[]>([]);
@@ -29,20 +39,20 @@ export const TaskList = () => {
 
   const handleModalClose = () => {
     setCurrentTask(null);
-    setIsTaskDetailsOpen(false)
-  }
+    setIsTaskDetailsOpen(false);
+  };
 
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>Title</TableCell>
-            <TableCell>Description</TableCell>
-            <TableCell>Due Date</TableCell>
-            <TableCell>Priority</TableCell>
-            <TableCell>Assignee</TableCell>
-            <TableCell>Status</TableCell>
+            {tableHeadings.map((heading, index) => (
+              <TableCell key={index} sx={{ fontWeight: 'bold' }}>
+                {heading}
+              </TableCell>
+            ))}
+
           </TableRow>
         </TableHead>
         <TableBody>
@@ -67,7 +77,7 @@ export const TaskList = () => {
                   {title}
                 </TableCell>
                 <TableCell>{description}</TableCell>
-                <TableCell>{dueDate}</TableCell>
+                <TableCell>{format(dueDate, 'PP')}</TableCell>
                 <TableCell>{capitalize(priorityLevel)}</TableCell>
                 <TableCell>{displayName}</TableCell>
                 <TableCell>{capitalize(status)}</TableCell>
@@ -76,7 +86,13 @@ export const TaskList = () => {
           })}
         </TableBody>
       </Table>
-      {currentTask ? <TaskDetails taskData={currentTask} isOpen={isTaskDetailsOpen} onClose={handleModalClose}/> : null}
+      {currentTask ? (
+        <TaskDetails
+          taskData={currentTask}
+          isOpen={isTaskDetailsOpen}
+          onClose={handleModalClose}
+        />
+      ) : null}
     </TableContainer>
   );
 };

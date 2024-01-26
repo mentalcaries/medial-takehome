@@ -5,10 +5,20 @@ import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import { Card, Chip, Paper, capitalize } from '@mui/material';
+import {
+  Card,
+  Chip,
+  Dialog,
+  DialogTitle,
+  Paper,
+  capitalize,
+  DialogContent,
+  DialogActions,
+} from '@mui/material';
 import {
   Autorenew,
   CheckCircle,
+  Close,
   NotInterested,
   Pending,
 } from '@mui/icons-material';
@@ -48,27 +58,17 @@ const TaskDetails = ({
   };
 
   return (
-    <Modal open={isOpen} onClose={onClose}>
-      <Card
-        sx={{
-          px: 3,
-          py: 8,
-          position: 'absolute',
-          width: '400',
-          top: '40%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          borderRadius: 4,
-        }}
+    <Dialog open={isOpen} onClose={onClose}>
+      <DialogTitle
+        variant="h5"
+        component="h2"
+        textAlign="center"
+        fontWeight="bold"
+        sx={{ pt: 5, pb: 2 }}
       >
-        <Typography
-          variant="h5"
-          component="h2"
-          textAlign="center"
-          fontWeight="bold"
-        >
-          Task Details
-        </Typography>
+        Task Details
+      </DialogTitle>
+      <DialogContent>
         <Chip
           sx={{ mt: 2, bgcolor: `${getPriorityBadgeColour(priorityLevel)}` }}
           label={`${capitalize(priorityLevel)} Priority`}
@@ -98,9 +98,12 @@ const TaskDetails = ({
             </Typography>
             {displayName}
           </Typography>
-          <Typography variant="body1" sx={{ mt: 2, display:'flex', gap:'4px', alignItems:'center' }}>
+          <Typography
+            variant="body1"
+            sx={{ mt: 2, display: 'flex', gap: '4px', alignItems: 'center' }}
+          >
             <Typography component="span" fontWeight="bold">
-              Status: {' '}
+              Status:{' '}
             </Typography>{' '}
             {capitalize(status)} {getStatusIcon(status)}
           </Typography>
@@ -110,8 +113,12 @@ const TaskDetails = ({
             </Typography>
           )}
         </Box>
-      </Card>
-    </Modal>
+      </DialogContent>
+      <DialogActions sx={{ mx: 'auto', mt: 2, mb: 4 }}>
+        <Button onClick={onClose}>Close</Button>
+        <Button>Edit</Button>
+      </DialogActions>
+    </Dialog>
   );
 };
 
