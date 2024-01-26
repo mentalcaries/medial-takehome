@@ -5,7 +5,7 @@ import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import { Card, Paper } from '@mui/material';
+import { Card, Chip, Paper, capitalize } from '@mui/material';
 
 // interface TaskData {
 //   id: string;
@@ -35,14 +35,30 @@ import { Card, Paper } from '@mui/material';
 //   status: 'in progress',
 // };
 
-const TaskDetails = ({taskData} : {taskData: Task}) => {
-  const [open, setOpen] = useState(true);
+const TaskDetails = ({ taskData }: { taskData: Task }) => {
+  const [isOpen, setIsOpen] = useState(true);
 
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const {
+    title,
+    description,
+    dueDate,
+    assignee: { displayName },
+    priorityLevel,
+    status,
+    notes,
+  } = taskData;
+
+  // const handleOpen = () => setOpen(true);
+  const handleClose = () => setIsOpen(false);
+
+  const getPriorityBadgeColour = (priority: string)=> {
+    if(priority === 'high') return '#ef5350'
+    if(priority === 'medium') return '#ff9800'
+    else return '#03a9f4'
+  }
 
   return (
-    <Modal open={open} onClose={handleClose}>
+    <Modal open={isOpen} onClose={handleClose}>
       <Card
         sx={{
           px: 3,
@@ -57,28 +73,29 @@ const TaskDetails = ({taskData} : {taskData: Task}) => {
         <Typography variant="h5" component="h2">
           Task Details
         </Typography>
+        <Chip  sx={{ mt: 2, bgcolor:`${getPriorityBadgeColour(priorityLevel)}` }} label={`${capitalize(priorityLevel)} Priority`} />
         <Box sx={{ mt: 3 }}>
-          <Typography variant="body1" sx={{ mt: 2 }}>
-            Title: {taskData.title}
+          <Typography variant="body1">
+            Title: {title}
           </Typography>
           <Typography variant="body1" sx={{ mt: 2 }}>
-            Description: {taskData.description}
+            Description: {description}
           </Typography>
           <Typography variant="body1" sx={{ mt: 2 }}>
-            Due Date: {taskData.dueDate}
+            Due Date: {dueDate}
           </Typography>
           <Typography variant="body1" sx={{ mt: 2 }}>
-            Assigned To: {taskData.assignee.displayName}
+            Assigned To: {displayName}
           </Typography>
           <Typography variant="body1" sx={{ mt: 2 }}>
-            Priority: {taskData.priorityLevel}
+            Priority: 
           </Typography>
           <Typography variant="body1" sx={{ mt: 2 }}>
-            Status: {taskData.status}
+            Status: {capitalize(status)}
           </Typography>
-          {taskData.notes && (
+          {notes && (
             <Typography variant="body1" sx={{ mt: 2 }}>
-              Notes: {taskData.notes}
+              Notes: {notes}
             </Typography>
           )}
         </Box>
