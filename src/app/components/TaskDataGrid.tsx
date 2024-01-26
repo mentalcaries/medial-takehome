@@ -3,7 +3,7 @@
 import { capitalize } from '@mui/material';
 import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 import { useEffect, useState } from 'react';
-import TaskDetails from './TaskDetails';
+import TaskDetails from './TaskDialog';
 
 const columns: GridColDef[] = [
   { field: 'title', headerName: 'Title', width: 120 },

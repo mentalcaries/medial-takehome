@@ -3,7 +3,7 @@
 import { Box, Button, Typography } from '@mui/material';
 import TaskForm from './components/TaskForm';
 import { TaskList } from './components/TaskList';
-import TaskDetails from './components/TaskDetails';
+import TaskDetails from './components/TaskDialog';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import { useState } from 'react';
 

@@ -9,7 +9,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { capitalize } from '@mui/material';
 import { useEffect, useState } from 'react';
-import TaskDetails from './TaskDetails';
+import TaskDetails from './TaskDialog';
 import { format } from 'date-fns';
 
 const tableHeadings = [
