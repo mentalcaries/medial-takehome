@@ -11,6 +11,7 @@ import { capitalize } from '@mui/material';
 import { useEffect, useState } from 'react';
 import TaskDetails from './TaskDialog';
 import { format } from 'date-fns';
+import { getAllItems } from '../api/firebase';
 
 const tableHeadings = [
   'Title',
@@ -27,9 +28,7 @@ export const TaskList = () => {
   const [isTaskDetailsOpen, setIsTaskDetailsOpen] = useState(false);
 
   useEffect(() => {
-    fetch('./data/tasks.json')
-      .then((response) => response.json())
-      .then((data) => setTableData(data));
+    getAllItems('tasks').then((data) => setTableData(data as Task[]));
   }, []);
 
   const handleTaskSelect = (row: Task) => {
@@ -52,7 +51,6 @@ export const TaskList = () => {
                 {heading}
               </TableCell>
             ))}
-
           </TableRow>
         </TableHead>
         <TableBody>

@@ -13,11 +13,11 @@ import {
   Typography,
 } from '@mui/material';
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { getAllItems } from '../api/firebase';
 
 const TaskForm = ({ taskData }: { taskData?: Task }) => {
-  
   const [userList, setUserList] = useState<User[]>([]);
-  
+
   const defaultTaskFormValues = {
     id: taskData?.id ?? '',
     title: taskData?.title ?? '',
@@ -34,18 +34,9 @@ const TaskForm = ({ taskData }: { taskData?: Task }) => {
 
   const [formData, setFormData] = useState<Task>(defaultTaskFormValues);
 
-
   useEffect(() => {
-    fetch('./data/users.json')
-      .then((response) => {
-        if (response.ok) {
-          return response.json();
-        }
-      })
-      .then((data) => setUserList(data));
+    getAllItems('users').then((data) => setUserList(data as User[]));
   }, []);
-
-  
 
   const handleInputChange = (
     event:
@@ -58,7 +49,7 @@ const TaskForm = ({ taskData }: { taskData?: Task }) => {
         ...prevData,
         assignee: {
           userId: value,
-          displayName: getAssigneeName(userList, value), 
+          displayName: getAssigneeName(userList, value),
         },
       }));
     } else {
@@ -121,7 +112,8 @@ const TaskForm = ({ taskData }: { taskData?: Task }) => {
               value={formData.assignee.userId}
             >
               {userList.map((user) => {
-                const { userId, displayName } = user;
+                console.log(user)
+                const { id: userId, displayName } = user;
                 return (
                   <MenuItem value={userId} key={userId}>
                     {displayName}

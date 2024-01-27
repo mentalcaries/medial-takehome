@@ -6,12 +6,10 @@ import { TaskList } from './components/TaskList';
 import TaskDetails from './components/TaskDialog';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import { useState } from 'react';
-import { getTasks } from './api/firebase';
 
 export default  function Home() {
   const [isNewTaskModalOpen, setIsNewTaskModalOpen] = useState(false);
 
-getTasks().then(data => console.log(data))
   return (
     <Box mx="auto" padding={3}>
       <Typography

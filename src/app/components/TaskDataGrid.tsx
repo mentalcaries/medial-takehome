@@ -4,6 +4,7 @@ import { capitalize } from '@mui/material';
 import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 import { useEffect, useState } from 'react';
 import TaskDetails from './TaskDialog';
+import { getAllItems } from '../api/firebase';
 
 const columns: GridColDef[] = [
   { field: 'title', headerName: 'Title', width: 120 },
@@ -37,11 +38,10 @@ export const TaskDataGrid = () => {
   const [tableData, setTableData] = useState([]);
   const [currentTask, setCurrentTask] = useState({})
 
-  useEffect(() => {
-    fetch('./data/tasks.json')
-      .then((response) => response.json())
-      .then((data) => setTableData(data));
-  }, []);
+  // useEffect(() => {
+  //   getAllItems('tasks')
+  //     .then((data) => setTableData(data));
+  // }, []);
 
   return (
     <div style={{ height: 600, width: '100%' }}>
