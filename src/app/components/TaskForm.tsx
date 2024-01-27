@@ -24,7 +24,7 @@ const TaskForm = ({ taskData }: { taskData?: Task }) => {
     description: taskData?.description ?? '',
     dueDate: taskData?.dueDate ?? '',
     assignee: {
-      userId: taskData?.assignee.userId || userList[0]?.userId || '',
+      userId: taskData?.assignee.userId ?? '',
       displayName: taskData?.assignee.displayName ?? '',
     },
     priorityLevel: taskData?.priorityLevel ?? '',
@@ -44,6 +44,8 @@ const TaskForm = ({ taskData }: { taskData?: Task }) => {
       })
       .then((data) => setUserList(data));
   }, []);
+
+  
 
   const handleInputChange = (
     event:
