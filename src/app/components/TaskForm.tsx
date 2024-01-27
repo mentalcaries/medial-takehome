@@ -6,7 +6,6 @@ import {
   FormControl,
   InputLabel,
   MenuItem,
-  Paper,
   Select,
   SelectChangeEvent,
   Stack,
@@ -15,19 +14,26 @@ import {
 } from '@mui/material';
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 
-const defaultTaskFormVales = {
-  title: '',
-  description: '',
-  dueDate: '',
-  assignee: { userId: '', displayName: '' },
-  priorityLevel: '',
-  notes: '',
-  status: '',
-};
-
-const TaskForm = () => {
-  const [formData, setFormData] = useState<Task>(defaultTaskFormVales);
+const TaskForm = ({ taskData }: { taskData?: Task }) => {
+  
   const [userList, setUserList] = useState<User[]>([]);
+  
+  const defaultTaskFormValues = {
+    id: taskData?.id ?? '',
+    title: taskData?.title ?? '',
+    description: taskData?.description ?? '',
+    dueDate: taskData?.dueDate ?? '',
+    assignee: {
+      userId: taskData?.assignee.userId || userList[0]?.userId || '',
+      displayName: taskData?.assignee.displayName ?? '',
+    },
+    priorityLevel: taskData?.priorityLevel ?? '',
+    notes: taskData?.notes ?? '',
+    status: taskData?.status ?? 'pending',
+  };
+
+  const [formData, setFormData] = useState<Task>(defaultTaskFormValues);
+
 
   useEffect(() => {
     fetch('./data/users.json')
@@ -45,19 +51,31 @@ const TaskForm = () => {
       | SelectChangeEvent
   ) => {
     const { name, value } = event.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
+    if (name === 'assignee.userId') {
+      setFormData((prevData) => ({
+        ...prevData,
+        assignee: {
+          userId: value,
+          displayName: getAssigneeName(userList, value), 
+        },
+      }));
+    } else {
+      setFormData((prevData) => ({ ...prevData, [name]: value }));
+    }
   };
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
-    console.log(formData);
+    console.table(formData);
+  };
+
+  const getAssigneeName = (userList: User[], id: string) => {
+    const assignee = userList.find((user) => user.userId === id);
+    return assignee?.displayName ?? '';
   };
 
   return (
-    <Box sx={{maxWidth: '520px', width: '100%', mx:'auto'}}>
-      {/* <Typography variant="h5" component="h2" align="center" mb={4}>
-        New Task
-      </Typography> */}
+    <Box sx={{ maxWidth: '520px', width: '100%', mx: 'auto' }}>
       <form onSubmit={handleSubmit}>
         <Stack spacing={3}>
           <TextField
@@ -89,29 +107,21 @@ const TaskForm = () => {
             value={formData.dueDate}
           />
 
-          {/* <TextField
-              id="assignee"
-              name="assignee"
-              label="Assignee"
-              size="small"
-              onChange={handleInputChange}
-              value={formData.assignee}
-            /> */}
-
           <FormControl size="small">
             <InputLabel id="assignee">Assignee</InputLabel>
             <Select
               labelId="assignee"
               label="Assignee"
               id="assignee"
-              name="assignee"
+              name="assignee.userId"
+              defaultValue={''}
               onChange={handleInputChange}
-              value={formData.assignee.displayName}
+              value={formData.assignee.userId}
             >
               {userList.map((user) => {
                 const { userId, displayName } = user;
                 return (
-                  <MenuItem value={displayName} key={userId}>
+                  <MenuItem value={userId} key={userId}>
                     {displayName}
                   </MenuItem>
                 );
@@ -128,6 +138,7 @@ const TaskForm = () => {
               name="priorityLevel"
               onChange={handleInputChange}
               value={formData.priorityLevel}
+              defaultValue={''}
             >
               <MenuItem value="low">Low</MenuItem>
               <MenuItem value="medium">Medium</MenuItem>
@@ -155,9 +166,10 @@ const TaskForm = () => {
               name="status"
               onChange={handleInputChange}
               value={formData.status}
+              defaultValue={''}
             >
               <MenuItem value="pending">Pending</MenuItem>
-              <MenuItem value="inProgress">In Progress</MenuItem>
+              <MenuItem value="in progress">In Progress</MenuItem>
               <MenuItem value="completed">Completed</MenuItem>
               <MenuItem value="cancelled">Cancelled</MenuItem>
             </Select>

@@ -34,7 +34,7 @@ const TaskDialog = ({
         Task Details
       </DialogTitle>
       <DialogContent>
-        {isEditing ? <TaskForm /> : <TaskDetails taskData={taskData} />}
+        {isEditing ? <TaskForm taskData={taskData}/> : <TaskDetails taskData={taskData} />}
       </DialogContent>
       <DialogActions sx={{ mx: 'auto', mt: 2, mb: 4 }}>
         {isEditing ? (
