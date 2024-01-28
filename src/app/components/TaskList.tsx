@@ -23,7 +23,18 @@ const tableHeadings = [
   'Status',
 ];
 
-export const TaskList = ({ userList }: { userList: User[] }) => {
+type TaskListProps = {
+  userList: User[];
+  setSnackBarState: ({
+    isOpen,
+    message,
+  }: {
+    isOpen: boolean;
+    message: string;
+  }) => void;
+};
+
+export const TaskList = ({ userList, setSnackBarState }: TaskListProps) => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [currentTask, setCurrentTask] = useState<Task | null>(null);
   const [isTaskDetailsOpen, setIsTaskDetailsOpen] = useState(false);
@@ -31,7 +42,7 @@ export const TaskList = ({ userList }: { userList: User[] }) => {
   useEffect(() => {
     return streamListItems('tasks', (snapshot: QuerySnapshot) => {
       const nextData = getTaskData(snapshot);
-      setTasks(nextData);
+      setTasks(nextData as Task[]);
     });
   }, []);
 
@@ -94,6 +105,7 @@ export const TaskList = ({ userList }: { userList: User[] }) => {
           isOpen={isTaskDetailsOpen}
           onClose={handleModalClose}
           userList={userList}
+          setSnackBarState={setSnackBarState}
         />
       ) : null}
     </TableContainer>

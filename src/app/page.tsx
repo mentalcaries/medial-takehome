@@ -1,15 +1,21 @@
 'use client';
 
-import { Box, Button } from '@mui/material';
+import { Box, Button, Snackbar } from '@mui/material';
 import { TaskList } from './components/TaskList';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import { useEffect, useState } from 'react';
-import { getAllItems, getTaskData, streamListItems, testSubs } from './api/firebase';
+import { getAllItems } from './api/firebase';
 import { NewTask } from './components/NewTask';
 
+const defaultSnackBarState = {
+  isOpen: false,
+  message: '',
+};
+
 export default function Home() {
-  const [isNewTaskModalOpen, setIsNewTaskModalOpen] = useState(false);
   const [userList, setUserList] = useState<User[]>([]);
+  const [isNewTaskModalOpen, setIsNewTaskModalOpen] = useState(false);
+  const [snackBarState, setSnackBarState] = useState(defaultSnackBarState);
 
   useEffect(() => {
     getAllItems('users')
@@ -17,10 +23,7 @@ export default function Home() {
       .catch((error: Error) => {
         console.error('Something went wrong', error);
       });
-
-      
   }, []);
-
 
   return (
     <Box mx="auto" padding={3}>
@@ -45,11 +48,18 @@ export default function Home() {
           New Task
         </Button>
       </Box>
-      <TaskList userList={userList} />
+      <TaskList userList={userList} setSnackBarState={setSnackBarState} />
       <NewTask
         isOpen={isNewTaskModalOpen}
         userList={userList}
         onClose={() => setIsNewTaskModalOpen(false)}
+        setSnackBarState={setSnackBarState}
+      />
+      <Snackbar
+        open={snackBarState.isOpen}
+        message={snackBarState.message}
+        autoHideDuration={2000}
+        onClose={() => setSnackBarState(defaultSnackBarState)}
       />
     </Box>
   );

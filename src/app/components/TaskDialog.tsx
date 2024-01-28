@@ -7,26 +7,33 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  Typography,
-  Box,
 } from '@mui/material';
 import { TaskDetails } from './TaskDetails';
 import { TaskForm } from './TaskForm';
 import { deleteTask, editTask } from '../api/firebase';
-import { nlNL } from '@mui/x-data-grid';
 import { ConfirmDelete } from './ConfirmDelete';
+
+type TaskDialogProps = {
+  taskData: Task;
+  isOpen: boolean;
+  onClose: () => void;
+  userList: User[];
+  setSnackBarState: ({
+    isOpen,
+    message,
+  }: {
+    isOpen: boolean;
+    message: string;
+  }) => void;
+};
 
 export const TaskDialog = ({
   taskData,
   isOpen,
   onClose,
   userList,
-}: {
-  taskData: Task;
-  isOpen: boolean;
-  onClose: () => void;
-  userList: User[];
-}) => {
+  setSnackBarState,
+}: TaskDialogProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
@@ -34,7 +41,9 @@ export const TaskDialog = ({
 
   const handleEditTask = (task: Task) => {
     editTask(task)
-      .then(() => console.log('success'))
+      .then(() =>
+        setSnackBarState({ isOpen: true, message: 'Task Updated Successfully' })
+      )
       .catch((error) => console.error('Error:', error))
       .finally(() => {
         onClose();
@@ -43,7 +52,7 @@ export const TaskDialog = ({
 
   const handleDeleteTask = (taskId: string) => {
     deleteTask(taskId)
-      .then(() => console.log('success'))
+      .then(() => setSnackBarState({ isOpen: true, message: 'Task Deleted' }))
       .catch((error) => console.error('Error:', error))
       .finally(() => {
         onClose();

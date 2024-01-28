@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { SetStateAction, useState } from 'react';
 import Button from '@mui/material/Button';
 import {
   Dialog,
@@ -12,18 +12,30 @@ import { TaskDetails } from './TaskDetails';
 import { TaskForm } from './TaskForm';
 import { addNewTask } from '../api/firebase';
 
+type NewTaskProps = {
+  isOpen: boolean;
+  onClose: () => void;
+  userList: User[];
+  setSnackBarState: ({
+    isOpen,
+    message,
+  }: {
+    isOpen: boolean;
+    message: string;
+  }) => void;
+};
+
 export const NewTask = ({
   isOpen,
   onClose,
   userList,
-}: {
-  isOpen: boolean;
-  onClose: () => void;
-  userList: User[];
-}) => {
+  setSnackBarState,
+}: NewTaskProps) => {
   const handleSubmitNewTask = (task: Task) => {
     addNewTask(task)
-      .then(() => console.log('success'))
+      .then(() =>
+        setSnackBarState({ isOpen: true, message: 'New Task Created' })
+      )
       .catch((error) => console.error('Error:', error))
       .finally(() => {
         onClose();
