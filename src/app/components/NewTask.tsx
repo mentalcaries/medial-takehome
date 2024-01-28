@@ -1,6 +1,5 @@
 'use client';
 
-import React, { SetStateAction, useState } from 'react';
 import Button from '@mui/material/Button';
 import {
   Dialog,
@@ -8,7 +7,6 @@ import {
   DialogContent,
   DialogActions,
 } from '@mui/material';
-import { TaskDetails } from './TaskDetails';
 import { TaskForm } from './TaskForm';
 import { addNewTask } from '../api/firebase';
 
