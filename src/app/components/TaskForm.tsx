@@ -15,9 +15,13 @@ import {
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { getAllItems } from '../api/firebase';
 
-const TaskForm = ({ taskData }: { taskData?: Task }) => {
-  const [userList, setUserList] = useState<User[]>([]);
-
+export const TaskForm = ({
+  taskData,
+  userList,
+}: {
+  taskData?: Task;
+  userList: User[];
+}) => {
   const defaultTaskFormValues = {
     id: taskData?.id ?? '',
     title: taskData?.title ?? '',
@@ -33,10 +37,6 @@ const TaskForm = ({ taskData }: { taskData?: Task }) => {
   };
 
   const [formData, setFormData] = useState<Task>(defaultTaskFormValues);
-
-  useEffect(() => {
-    getAllItems('users').then((data) => setUserList(data as User[]));
-  }, []);
 
   const handleInputChange = (
     event:
@@ -63,7 +63,9 @@ const TaskForm = ({ taskData }: { taskData?: Task }) => {
   };
 
   const getAssigneeName = (userList: User[], id: string) => {
-    const assignee = userList.find((user) => user.userId === id);
+    const assignee = userList.find(
+      (user) => user.userId === id || user.id === id
+    );
     return assignee?.displayName ?? '';
   };
 
@@ -112,7 +114,6 @@ const TaskForm = ({ taskData }: { taskData?: Task }) => {
               value={formData.assignee.userId}
             >
               {userList.map((user) => {
-                console.log(user)
                 const { id: userId, displayName } = user;
                 return (
                   <MenuItem value={userId} key={userId}>
@@ -178,4 +179,3 @@ const TaskForm = ({ taskData }: { taskData?: Task }) => {
   );
 };
 
-export default TaskForm;

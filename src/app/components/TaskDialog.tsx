@@ -9,16 +9,18 @@ import {
   DialogActions,
 } from '@mui/material';
 import { TaskDetails } from './TaskDetails';
-import TaskForm from './TaskForm';
+import { TaskForm } from './TaskForm';
 
-const TaskDialog = ({
+export const TaskDialog = ({
   taskData,
   isOpen,
   onClose,
+  userList
 }: {
   taskData: Task;
   isOpen: boolean;
   onClose: () => void;
+  userList: User[]
 }) => {
   const [isEditing, setIsEditing] = useState(false);
 
@@ -34,11 +36,15 @@ const TaskDialog = ({
         Task Details
       </DialogTitle>
       <DialogContent>
-        {isEditing ? <TaskForm taskData={taskData}/> : <TaskDetails taskData={taskData} />}
+        {isEditing ? (
+          <TaskForm taskData={taskData} userList={userList}/>
+        ) : (
+          <TaskDetails taskData={taskData} />
+        )}
       </DialogContent>
       <DialogActions sx={{ mx: 'auto', mt: 2, mb: 4 }}>
         {isEditing ? (
-          <Button onClick={()=> setIsEditing(false)}>Cancel</Button>
+          <Button onClick={() => setIsEditing(false)}>Cancel</Button>
         ) : (
           <>
             <Button onClick={onClose}>Close</Button>
@@ -49,5 +55,3 @@ const TaskDialog = ({
     </Dialog>
   );
 };
-
-export default TaskDialog;

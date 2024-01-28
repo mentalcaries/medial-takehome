@@ -12,6 +12,7 @@ declare global {
   };
 
   type User = {
+    id?: string;
     userId: string;
     displayName: string;
   };

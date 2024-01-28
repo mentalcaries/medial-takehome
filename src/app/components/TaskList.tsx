@@ -9,7 +9,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { capitalize } from '@mui/material';
 import { useEffect, useState } from 'react';
-import TaskDetails from './TaskDialog';
+import { TaskDialog } from './TaskDialog';
 import { format } from 'date-fns';
 import { getAllItems } from '../api/firebase';
 
@@ -26,9 +26,20 @@ export const TaskList = () => {
   const [tableData, setTableData] = useState<Task[]>([]);
   const [currentTask, setCurrentTask] = useState<Task | null>(null);
   const [isTaskDetailsOpen, setIsTaskDetailsOpen] = useState(false);
+  const [userList, setUserList] = useState<User[]>([]);
 
   useEffect(() => {
-    getAllItems('tasks').then((data) => setTableData(data as Task[]));
+    getAllItems('tasks')
+      .then((data) => setTableData(data as Task[]))
+      .catch((error: Error) => {
+        console.error('Something went wrong', error);
+      });
+
+    getAllItems('users')
+      .then((data) => setUserList(data as User[]))
+      .catch((error: Error) => {
+        console.error('Something went wrong', error);
+      });
   }, []);
 
   const handleTaskSelect = (row: Task) => {
@@ -85,10 +96,11 @@ export const TaskList = () => {
         </TableBody>
       </Table>
       {currentTask ? (
-        <TaskDetails
+        <TaskDialog
           taskData={currentTask}
           isOpen={isTaskDetailsOpen}
           onClose={handleModalClose}
+          userList={userList}
         />
       ) : null}
     </TableContainer>
