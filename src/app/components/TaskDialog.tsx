@@ -7,10 +7,13 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
+  Typography,
+  Box,
 } from '@mui/material';
 import { TaskDetails } from './TaskDetails';
 import { TaskForm } from './TaskForm';
 import { editTask } from '../api/firebase';
+import { nlNL } from '@mui/x-data-grid';
 
 export const TaskDialog = ({
   taskData,
@@ -24,6 +27,7 @@ export const TaskDialog = ({
   userList: User[];
 }) => {
   const [isEditing, setIsEditing] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const handleEditTask = (task: Task) => {
     editTask(task)
@@ -52,19 +56,57 @@ export const TaskDialog = ({
             userList={userList}
             handleFormSubmit={handleEditTask}
           />
-        ) : (
-          <TaskDetails taskData={taskData} />
-        )}
+        ) : null}
+        {isDeleting ? (
+          <>
+            <Typography align="center" color="red" variant="h6">
+              {' '}
+              Are you sure?
+            </Typography>
+            <Typography align="center" color="red">
+              {' '}
+              WARNING: This cannot be undone.
+            </Typography>
+            <Box
+              sx={{ display: 'flex', justifyContent: 'center', gap: 4, mt: 3 }}
+            >
+              <Button onClick={onClose} variant="outlined" color="error">
+                Confirm
+              </Button>
+              <Button variant="outlined" onClick={() => setIsDeleting(false)}>
+                No way
+              </Button>
+            </Box>
+          </>
+        ) : null}
+
+        {!isEditing && !isDeleting ? <TaskDetails taskData={taskData} /> : null}
       </DialogContent>
       <DialogActions sx={{ mx: 'auto', mt: 2, mb: 4 }}>
         {isEditing ? (
           <Button onClick={() => setIsEditing(false)}>Cancel</Button>
-        ) : (
+        ) : null}
+
+        {!isEditing && !isDeleting ? (
           <>
             <Button onClick={onClose}>Close</Button>
-            <Button onClick={() => setIsEditing(true)}>Edit</Button>
+            <Button
+              onClick={() => {
+                setIsEditing(true);
+                setIsDeleting(false);
+              }}
+            >
+              Edit
+            </Button>
+            <Button
+              variant="contained"
+              color="error"
+              onClick={() => setIsDeleting(true)}
+            >
+              Delete
+            </Button>
           </>
-        )}
+        ) : null}
       </DialogActions>
     </Dialog>
   );
