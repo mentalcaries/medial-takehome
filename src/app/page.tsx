@@ -1,12 +1,23 @@
 'use client';
 
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import { TaskList } from './components/TaskList';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { getAllItems } from './api/firebase';
+import { NewTask } from './components/NewTask';
 
 export default function Home() {
   const [isNewTaskModalOpen, setIsNewTaskModalOpen] = useState(false);
+  const [userList, setUserList] = useState<User[]>([]);
+
+  useEffect(() => {
+    getAllItems('users')
+      .then((data) => setUserList(data as User[]))
+      .catch((error: Error) => {
+        console.error('Something went wrong', error);
+      });
+  }, []);
 
   return (
     <Box mx="auto" padding={3}>
@@ -19,6 +30,11 @@ export default function Home() {
             justifyContent: 'space-between',
             gap: '8px',
             bgcolor: '#3e2465',
+            ':hover': {
+              bgcolor: '#3e2465',
+              opacity: '0.8',
+              transition: '0.2s',
+            },
           }}
           onClick={() => setIsNewTaskModalOpen(true)}
         >
@@ -26,9 +42,8 @@ export default function Home() {
           New Task
         </Button>
       </Box>
-
-      {/* <TaskForm /> */}
-      <TaskList />
+      <TaskList userList={userList} />
+      <NewTask isOpen={isNewTaskModalOpen} userList={userList} onClose={()=>setIsNewTaskModalOpen(false)} />
     </Box>
   );
 }

@@ -22,21 +22,14 @@ const tableHeadings = [
   'Status',
 ];
 
-export const TaskList = () => {
+export const TaskList = ({ userList }: { userList: User[] }) => {
   const [tableData, setTableData] = useState<Task[]>([]);
   const [currentTask, setCurrentTask] = useState<Task | null>(null);
   const [isTaskDetailsOpen, setIsTaskDetailsOpen] = useState(false);
-  const [userList, setUserList] = useState<User[]>([]);
 
   useEffect(() => {
     getAllItems('tasks')
       .then((data) => setTableData(data as Task[]))
-      .catch((error: Error) => {
-        console.error('Something went wrong', error);
-      });
-
-    getAllItems('users')
-      .then((data) => setUserList(data as User[]))
       .catch((error: Error) => {
         console.error('Something went wrong', error);
       });
