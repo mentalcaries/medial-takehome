@@ -23,17 +23,18 @@ const tableHeadings = [
 ];
 
 export const TaskList = ({ userList }: { userList: User[] }) => {
-  const [tableData, setTableData] = useState<Task[]>([]);
+  const [tasks, setTasks] = useState<Task[]>([]);
   const [currentTask, setCurrentTask] = useState<Task | null>(null);
   const [isTaskDetailsOpen, setIsTaskDetailsOpen] = useState(false);
 
   useEffect(() => {
     getAllItems('tasks')
-      .then((data) => setTableData(data as Task[]))
+      .then((data) => setTasks(data as Task[]))
       .catch((error: Error) => {
         console.error('Something went wrong', error);
       });
   }, []);
+
 
   const handleTaskSelect = (row: Task) => {
     setCurrentTask(row);
@@ -58,7 +59,7 @@ export const TaskList = ({ userList }: { userList: User[] }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {tableData.map((row) => {
+          {tasks.map((row) => {
             const {
               id,
               title,

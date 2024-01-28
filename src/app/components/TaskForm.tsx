@@ -10,17 +10,17 @@ import {
   SelectChangeEvent,
   Stack,
   TextField,
-  Typography,
 } from '@mui/material';
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
-import { getAllItems } from '../api/firebase';
+import { ChangeEvent, FormEvent, useState } from 'react';
 
 export const TaskForm = ({
   taskData,
   userList,
+  handleFormSubmit,
 }: {
   taskData?: Task;
   userList: User[];
+  handleFormSubmit: (task: Task) => void;
 }) => {
   const defaultTaskFormValues = {
     id: taskData?.id ?? '',
@@ -59,7 +59,7 @@ export const TaskForm = ({
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
-    console.table(formData);
+    handleFormSubmit(formData);
   };
 
   const getAssigneeName = (userList: User[], id: string) => {
@@ -70,7 +70,7 @@ export const TaskForm = ({
   };
 
   return (
-    <Box sx={{ maxWidth: '520px', width: '100%', mx: 'auto' }}>
+    <Box sx={{ maxWidth: '520px', width: '100%', mx: 'auto', py: 2 }}>
       <form onSubmit={handleSubmit}>
         <Stack spacing={3}>
           <TextField
@@ -178,4 +178,3 @@ export const TaskForm = ({
     </Box>
   );
 };
-

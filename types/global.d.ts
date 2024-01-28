@@ -1,7 +1,7 @@
 export {};
 declare global {
   type Task = {
-    id: string;
+    id?: string;
     title: string;
     description: string;
     dueDate: string;

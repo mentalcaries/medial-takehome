@@ -10,19 +10,29 @@ import {
 } from '@mui/material';
 import { TaskDetails } from './TaskDetails';
 import { TaskForm } from './TaskForm';
+import { editTask } from '../api/firebase';
 
 export const TaskDialog = ({
   taskData,
   isOpen,
   onClose,
-  userList
+  userList,
 }: {
   taskData: Task;
   isOpen: boolean;
   onClose: () => void;
-  userList: User[]
+  userList: User[];
 }) => {
   const [isEditing, setIsEditing] = useState(false);
+
+  const handleEditTask = (task: Task) => {
+    editTask(task)
+      .then(() => console.log('success'))
+      .catch((error) => console.error('Error:', error))
+      .finally(() => {
+        onClose();
+      });
+  };
 
   return (
     <Dialog open={isOpen} onClose={onClose} fullWidth>
@@ -37,7 +47,11 @@ export const TaskDialog = ({
       </DialogTitle>
       <DialogContent>
         {isEditing ? (
-          <TaskForm taskData={taskData} userList={userList}/>
+          <TaskForm
+            taskData={taskData}
+            userList={userList}
+            handleFormSubmit={handleEditTask}
+          />
         ) : (
           <TaskDetails taskData={taskData} />
         )}

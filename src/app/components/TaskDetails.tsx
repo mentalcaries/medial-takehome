@@ -8,6 +8,7 @@ import {
 
 export const TaskDetails = ({ taskData }: { taskData: Task }) => {
   const {
+    id,
     title,
     description,
     dueDate,

@@ -14,7 +14,7 @@
 - [x] Display the list of tasks in a table or list view (I have attached a JSON list that you can import/write to and read from.)
 - [] Implement functionality to edit and delete tasks.
 - [] Implement functionality to assign tasks to other users 
-- [] Style the application using Material UI components.
+- [x] Style the application using Material UI components.
 - [] Storage can be done in memory where a list can be maintained within the state or the application/dashboard/main page. 
 - [] Implement any additional features or improvements you think would enhance the todo list application.
 
