@@ -11,7 +11,8 @@ import { capitalize } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { TaskDialog } from './TaskDialog';
 import { format } from 'date-fns';
-import { getAllItems } from '../api/firebase';
+import { getTaskData, streamListItems } from '../api/firebase';
+import { QuerySnapshot } from 'firebase/firestore';
 
 const tableHeadings = [
   'Title',
@@ -28,13 +29,11 @@ export const TaskList = ({ userList }: { userList: User[] }) => {
   const [isTaskDetailsOpen, setIsTaskDetailsOpen] = useState(false);
 
   useEffect(() => {
-    getAllItems('tasks')
-      .then((data) => setTasks(data as Task[]))
-      .catch((error: Error) => {
-        console.error('Something went wrong', error);
-      });
+    return streamListItems('tasks', (snapshot: QuerySnapshot) => {
+      const nextData = getTaskData(snapshot);
+      setTasks(nextData);
+    });
   }, []);
-
 
   const handleTaskSelect = (row: Task) => {
     setCurrentTask(row);

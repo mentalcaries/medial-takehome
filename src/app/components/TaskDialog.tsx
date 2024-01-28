@@ -12,8 +12,9 @@ import {
 } from '@mui/material';
 import { TaskDetails } from './TaskDetails';
 import { TaskForm } from './TaskForm';
-import { editTask } from '../api/firebase';
+import { deleteTask, editTask } from '../api/firebase';
 import { nlNL } from '@mui/x-data-grid';
+import { ConfirmDelete } from './ConfirmDelete';
 
 export const TaskDialog = ({
   taskData,
@@ -29,8 +30,19 @@ export const TaskDialog = ({
   const [isEditing, setIsEditing] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
+  const { id } = taskData;
+
   const handleEditTask = (task: Task) => {
     editTask(task)
+      .then(() => console.log('success'))
+      .catch((error) => console.error('Error:', error))
+      .finally(() => {
+        onClose();
+      });
+  };
+
+  const handleDeleteTask = (taskId: string) => {
+    deleteTask(taskId)
       .then(() => console.log('success'))
       .catch((error) => console.error('Error:', error))
       .finally(() => {
@@ -58,26 +70,11 @@ export const TaskDialog = ({
           />
         ) : null}
         {isDeleting ? (
-          <>
-            <Typography align="center" color="red" variant="h6">
-              {' '}
-              Are you sure?
-            </Typography>
-            <Typography align="center" color="red">
-              {' '}
-              WARNING: This cannot be undone.
-            </Typography>
-            <Box
-              sx={{ display: 'flex', justifyContent: 'center', gap: 4, mt: 3 }}
-            >
-              <Button onClick={onClose} variant="outlined" color="error">
-                Confirm
-              </Button>
-              <Button variant="outlined" onClick={() => setIsDeleting(false)}>
-                No way
-              </Button>
-            </Box>
-          </>
+          <ConfirmDelete
+            setIsDeleting={setIsDeleting}
+            taskId={id as string}
+            handleDelete={handleDeleteTask}
+          />
         ) : null}
 
         {!isEditing && !isDeleting ? <TaskDetails taskData={taskData} /> : null}

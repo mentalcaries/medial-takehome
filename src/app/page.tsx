@@ -4,7 +4,7 @@ import { Box, Button } from '@mui/material';
 import { TaskList } from './components/TaskList';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import { useEffect, useState } from 'react';
-import { getAllItems } from './api/firebase';
+import { getAllItems, getTaskData, streamListItems, testSubs } from './api/firebase';
 import { NewTask } from './components/NewTask';
 
 export default function Home() {
@@ -17,7 +17,10 @@ export default function Home() {
       .catch((error: Error) => {
         console.error('Something went wrong', error);
       });
+
+      
   }, []);
+
 
   return (
     <Box mx="auto" padding={3}>
@@ -43,7 +46,11 @@ export default function Home() {
         </Button>
       </Box>
       <TaskList userList={userList} />
-      <NewTask isOpen={isNewTaskModalOpen} userList={userList} onClose={()=>setIsNewTaskModalOpen(false)} />
+      <NewTask
+        isOpen={isNewTaskModalOpen}
+        userList={userList}
+        onClose={() => setIsNewTaskModalOpen(false)}
+      />
     </Box>
   );
 }

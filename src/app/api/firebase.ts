@@ -4,6 +4,8 @@ import {
   deleteDoc,
   doc,
   getDocs,
+  onSnapshot,
+  query,
   setDoc,
 } from 'firebase/firestore';
 import { db } from './config';
@@ -16,6 +18,34 @@ export const getAllItems = async (list: string) => {
     return data;
   });
 };
+
+
+export function streamListItems(list: any, handleSuccess: any) {
+	const listCollectionRef = collection(db, list);
+	return onSnapshot(listCollectionRef, handleSuccess);
+}
+
+export function getTaskData(snapshot) {
+
+	return snapshot.docs
+		.map((docRef) => {
+			const data = docRef.data();
+			data.id = docRef.id;
+
+			return data;
+		})
+}
+
+// export const testSubs = () => {
+//   const q = query(collection(db, 'tasks'));
+//   const tasks: Task[] = [];
+//   onSnapshot(q, (querySnapshot) => {
+//     querySnapshot.forEach((doc) => {
+//       tasks.push(doc.data());
+//     });
+//   });
+//   return tasks
+// };
 
 export const addNewTask = async (task: Task) => {
   const listCollectionRef = collection(db, 'tasks');
