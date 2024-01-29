@@ -7,6 +7,9 @@
 * Material UI
 * Firebase
 
+<img width="1085" alt="image" src="https://github.com/mentalcaries/medial-takehome/assets/77761206/a0ccad46-f106-485a-9224-99b7b22ba312">
+
+
 **What it does:**
 
 * Create, view, edit, and delete tasks with rich details like title, description, due date, assignee, priority, notes, and status.
