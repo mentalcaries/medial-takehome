@@ -25,16 +25,9 @@ const tableHeadings = [
 
 type TaskListProps = {
   userList: User[];
-  setSnackBarState: ({
-    isOpen,
-    message,
-  }: {
-    isOpen: boolean;
-    message: string;
-  }) => void;
 };
 
-export const TaskList = ({ userList, setSnackBarState }: TaskListProps) => {
+export const TaskList = ({ userList }: TaskListProps) => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [currentTask, setCurrentTask] = useState<Task | null>(null);
   const [isTaskDetailsOpen, setIsTaskDetailsOpen] = useState(false);
@@ -55,6 +48,7 @@ export const TaskList = ({ userList, setSnackBarState }: TaskListProps) => {
     setCurrentTask(null);
     setIsTaskDetailsOpen(false);
   };
+  
 
   return (
     <TableContainer component={Paper}>
@@ -105,7 +99,6 @@ export const TaskList = ({ userList, setSnackBarState }: TaskListProps) => {
           isOpen={isTaskDetailsOpen}
           onClose={handleModalClose}
           userList={userList}
-          setSnackBarState={setSnackBarState}
         />
       ) : null}
     </TableContainer>

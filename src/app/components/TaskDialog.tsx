@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Button from '@mui/material/Button';
 import {
   Dialog,
@@ -12,19 +12,16 @@ import { TaskDetails } from './TaskDetails';
 import { TaskForm } from './TaskForm';
 import { deleteTask, editTask } from '../api/firebase';
 import { ConfirmDelete } from './ConfirmDelete';
+import {
+  SnackBarContext,
+  SnackBarContextType,
+} from '../contexts/SnackBarContext';
 
 type TaskDialogProps = {
   taskData: Task;
   isOpen: boolean;
   onClose: () => void;
   userList: User[];
-  setSnackBarState: ({
-    isOpen,
-    message,
-  }: {
-    isOpen: boolean;
-    message: string;
-  }) => void;
 };
 
 export const TaskDialog = ({
@@ -32,12 +29,14 @@ export const TaskDialog = ({
   isOpen,
   onClose,
   userList,
-  setSnackBarState,
 }: TaskDialogProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
   const { id } = taskData;
+  const { setSnackBarState } = useContext(
+    SnackBarContext
+  ) as SnackBarContextType;
 
   const handleEditTask = (task: Task) => {
     editTask(task)
