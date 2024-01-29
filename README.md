@@ -9,10 +9,12 @@
 
 **What it does:**
 
-* Create, view, edit, and delete tasks with rich details like title, description, due date, assignee, priority, notes, and status.
-* Assign tasks to other users for collaborative working.
-* Enjoy a sleek and intuitive interface powered by Material UI.
-* Keep your tasks synced and accessible from anywhere with Firebase integration.
+- View all existing tasks
+- See the details of each task, with badges and icons to indicate their priority and status
+- Add new tasks
+- Edit tasks and re-assign to other users 
+- Delete tasks (with a confirmation modal)
+- Pagination and sorting of tasks
 
 
 ## Requirements
