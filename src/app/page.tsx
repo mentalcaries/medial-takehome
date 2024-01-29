@@ -50,7 +50,7 @@ export default function Home() {
             New Task
           </Button>
         </Box>
-        <TaskList userList={userList} setSnackBarState={setSnackBarState} />
+        <TaskList userList={userList} />
         <NewTask
           isOpen={isNewTaskModalOpen}
           userList={userList}

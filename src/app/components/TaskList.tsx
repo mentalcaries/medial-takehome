@@ -1,33 +1,48 @@
 'use client';
 
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import { capitalize } from '@mui/material';
+import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 import { useEffect, useState } from 'react';
-import { TaskDialog } from './TaskDialog';
-import { format } from 'date-fns';
 import { getTaskData, streamListItems } from '../api/firebase';
 import { QuerySnapshot } from 'firebase/firestore';
+import { capitalize } from '@mui/material';
+import { TaskDialog } from './TaskDialog';
+import { format } from 'date-fns';
 
-const tableHeadings = [
-  'Title',
-  'Description',
-  'Due Date',
-  'Priority',
-  'Assignee',
-  'Status',
+const columns: GridColDef[] = [
+  { field: 'title', headerName: 'Title', width: 120 },
+  { field: 'description', headerName: 'Description', width: 180 },
+  {
+    field: 'dueDate',
+    headerName: 'Due Date',
+    width: 120,
+    valueGetter: (params: GridValueGetterParams) =>
+      format(params.row.dueDate, 'PP'),
+  },
+  {
+    field: 'priorityLevel',
+    headerName: 'Priority',
+    width: 90,
+    valueGetter: (params: GridValueGetterParams) =>
+      capitalize(params.row.priorityLevel),
+  },
+  {
+    field: 'assignee',
+    headerName: 'Assignee',
+    width: 120,
+    valueGetter: (params: GridValueGetterParams) =>
+      params.row?.assignee?.displayName,
+  },
+  {
+    field: 'status',
+    headerName: 'Status',
+    width: 120,
+    valueGetter: (params: GridValueGetterParams) =>
+      capitalize(params.row.status),
+  },
+  { field: 'notes', headerName: 'Notes', width: 180 },
 ];
 
-type TaskListProps = {
-  userList: User[];
-};
-
-export const TaskList = ({ userList }: TaskListProps) => {
+export const TaskList = ({ userList }: { userList: User[] }) => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [currentTask, setCurrentTask] = useState<Task | null>(null);
   const [isTaskDetailsOpen, setIsTaskDetailsOpen] = useState(false);
@@ -48,51 +63,24 @@ export const TaskList = ({ userList }: TaskListProps) => {
     setCurrentTask(null);
     setIsTaskDetailsOpen(false);
   };
-  
 
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            {tableHeadings.map((heading, index) => (
-              <TableCell key={index} sx={{ fontWeight: 'bold' }}>
-                {heading}
-              </TableCell>
-            ))}
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {tasks.map((row) => {
-            const {
-              id,
-              title,
-              description,
-              dueDate,
-              priorityLevel,
-              assignee: { displayName },
-              status,
-            } = row;
-            return (
-              <TableRow
-                hover
-                key={id}
-                onClick={() => handleTaskSelect(row)}
-                sx={{ cursor: 'pointer' }}
-              >
-                <TableCell component="th" scope="row">
-                  {title}
-                </TableCell>
-                <TableCell>{description}</TableCell>
-                <TableCell>{format(dueDate, 'PP')}</TableCell>
-                <TableCell>{capitalize(priorityLevel)}</TableCell>
-                <TableCell>{displayName}</TableCell>
-                <TableCell>{capitalize(status)}</TableCell>
-              </TableRow>
-            );
-          })}
-        </TableBody>
-      </Table>
+    <div style={{ height: 600, width: '100%' }}>
+      <DataGrid
+        rows={tasks}
+        columns={columns}
+        initialState={{
+          sorting: {
+            sortModel: [{ field: 'title', sort: 'asc' }],
+          },
+          pagination: {
+            paginationModel: { page: 0, pageSize: 8 },
+          },
+        }}
+        pageSizeOptions={[5, 8, 10]}
+        onRowClick={(params) => handleTaskSelect(params.row)}
+        sx={{ cursor: 'pointer' }}
+      />
       {currentTask ? (
         <TaskDialog
           taskData={currentTask}
@@ -101,6 +89,6 @@ export const TaskList = ({ userList }: TaskListProps) => {
           userList={userList}
         />
       ) : null}
-    </TableContainer>
+    </div>
   );
 };
